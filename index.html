@@ -103,6 +103,45 @@
     .knob{ position:absolute; top:50%; left:4px; width:22px; height:22px; border-radius:50%; transform: translateY(-50%); background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.25); transition:left .25s ease;}
     [data-theme="dark"] .knob{ left:22px; }
 
+    /* Experience (NEW) */
+    .xp-wrap{
+      margin-top: 28px; padding: 28px; border-radius: 24px; background: var(--card);
+      border:1px solid var(--border); box-shadow: var(--shadow); position:relative; overflow:hidden;
+    }
+    .xp-wrap::before{
+      content:""; position:absolute; inset:-1px; border-radius:26px; padding:1px; pointer-events:none;
+      background: linear-gradient(90deg, rgba(11,116,255,.25), rgba(0,196,140,.25));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+    }
+    .xp-head{
+      display:flex; align-items:center; gap:14px; margin-bottom:16px; flex-wrap:wrap;
+    }
+    .xp-head h2{
+      margin:0; font-family: Lexend, Inter, sans-serif; font-size: clamp(22px, 2.2vw, 28px);
+    }
+    .xp-sub{ color: var(--muted); }
+    .xp-grid{
+      display:grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 14px;
+    }
+    .xp-card{
+      position:relative; border-radius: 18px; padding: 22px 20px; overflow:hidden; border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.64)); backdrop-filter: blur(8px); box-shadow: var(--shadow);
+    }
+    [data-theme="dark"] .xp-card{ background: linear-gradient(180deg, rgba(20,24,41,.82), rgba(16,20,36,.64)); }
+    .xp-title{ display:flex; align-items:center; gap:10px; margin:0 0 6px; font-weight:800; font-family: Lexend, Inter, sans-serif; letter-spacing:-.02em; font-size: clamp(18px, 1.6vw, 22px);}
+    .xp-emoji{ font-size:1.4rem }
+    .xp-kicker{ text-transform: uppercase; font-weight:700; font-size:.9rem; color:var(--muted); margin-bottom:10px; }
+    .xp-section{ margin-top:12px; }
+    .xp-section h4{ margin:0 0 6px; font-size:.98rem; letter-spacing:.02em; text-transform:uppercase; color: var(--muted); }
+    .xp-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+    .xp-item{ display:flex; gap:10px; padding:10px 12px; border-radius:12px; background: rgba(99,116,162,.06); border:1px solid var(--border); }
+    .xp-dot{ width:8px; height:8px; border-radius:999px; margin-top:6px; flex:0 0 auto; background: var(--info); }
+    .xp-card.rest .xp-dot{ background: var(--success); }
+    .xp-card.tours .xp-dot{ background: var(--brand-2); }
+    .xp-badges{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .xp-badge{ border:1px solid var(--border); background: rgba(255,255,255,.6); padding:8px 10px; border-radius:999px; font-weight:700; letter-spacing:.02em; box-shadow: var(--glow); font-size:.9rem; }
+
     /* Matrix wrapper */
     .matrix-wrap{ position: relative; margin-top: 28px; padding: 52px 28px 72px; border-radius: 24px; background: var(--card); border:1px solid var(--border); box-shadow: var(--shadow); overflow: hidden;}
 
@@ -188,6 +227,7 @@
 
     /* Responsive */
     @media (max-width: 900px){
+      .xp-grid{ grid-template-columns: 1fr; }
       .grid{ grid-template-columns: 1fr; }
       .axis, .axis-label-x, .axis-label-y{ display:none; }
       .matrix-wrap{ padding: 22px; }
@@ -203,7 +243,6 @@
         <div class="logo" aria-hidden="true"></div>
         <div>
           <h1>Matriz de Impacto</h1>
-          <div class="subtitle">Prioriza iniciativas por <strong>Beneficio</strong> vs <strong>Esfuerzo</strong> con un diseño ejecutivo</div>
         </div>
         <div class="actions">
           <div class="toggle" role="button" aria-label="Cambiar tema" id="themeToggle">
@@ -214,6 +253,73 @@
         </div>
       </div>
     </header>
+
+    <!-- NEW: Proyectos y Experiencia -->
+    <section class="xp-wrap" aria-label="Proyectos y Experiencia">
+      <div class="xp-head">
+        <h2>Proyectos y Experiencia</h2>
+        <div class="xp-sub">Casos reales con mejoras medibles en operación y ventas</div>
+      </div>
+
+      <div class="xp-grid">
+        <!-- Restaurantes -->
+        <article class="xp-card rest" tabindex="0">
+          <h3 class="xp-title"><span class="xp-emoji">🍽️</span> Agentes para Restaurantes</h3>
+          <div class="xp-kicker">Experiencia</div>
+
+          <div class="xp-section">
+            <h4>Funciones clave</h4>
+            <ul class="xp-list">
+              <li class="xp-item"><span class="xp-dot"></span><div>Reservas, lista de espera y confirmaciones en tiempo real.</div></li>
+              <li class="xp-item"><span class="xp-dot"></span><div>Menú y FAQ (horarios, políticas) con IA + RAG.</div></li>
+            </ul>
+          </div>
+
+          <div class="xp-section">
+            <h4>Integraciones</h4>
+            <ul class="xp-list">
+              <li class="xp-item"><span class="xp-dot"></span><div>Menú en tiempo real para mostrar disponibilidad.</div></li>
+              <li class="xp-item"><span class="xp-dot"></span><div>CRM para administrar pedidos, imprimir facturas y habilitar/deshabilitar platos.</div></li>
+            </ul>
+          </div>
+
+          <div class="xp-section">
+            <h4>Resultados</h4>
+            <div class="xp-badges">
+              <span class="xp-badge">Respuestas &lt; 1 min</span>
+              <span class="xp-badge">Más reservas en horas pico</span>
+              <span class="xp-badge">Menos no-show</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tours Medellín -->
+        <article class="xp-card tours" tabindex="0">
+          <h3 class="xp-title"><span class="xp-emoji">🧭</span> Agencia de Tours en Medellín</h3>
+          <div class="xp-kicker">Experiencia</div>
+
+          <div class="xp-section">
+            <h4>Funciones clave</h4>
+            <ul class="xp-list">
+              <li class="xp-item"><span class="xp-dot"></span><div>Cotización y reserva (fecha, cupos, punto de encuentro, calendario y generación de link de pago).</div></li>
+              <li class="xp-item"><span class="xp-dot"></span><div>Upsell / cross-sell: transporte, guía bilingüe y experiencias.</div></li>
+              <li class="xp-item"><span class="xp-dot"></span><div>Reprogramaciones y cancelaciones explicadas por el asistente.</div></li>
+              <li class="xp-item"><span class="xp-dot"></span><div>Atención multiidioma y cobertura fuera de horario.</div></li>
+            </ul>
+          </div>
+
+          <div class="xp-section">
+            <h4>Resultados</h4>
+            <div class="xp-badges">
+              <span class="xp-badge">Mayor conversión fuera de horario</span>
+              <span class="xp-badge">Respuestas rápidas = más cierres</span>
+              <span class="xp-badge">Calendario lleno tras implementación</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <!-- /END Experience -->
 
     <section class="matrix-wrap" aria-label="Matriz Beneficio vs Esfuerzo">
       <div class="axis" aria-hidden="true"></div>
@@ -228,7 +334,7 @@
           <p class="desc">Acciones inmediatas que generan impacto visible y retorno rápido.</p>
           <ul class="list">
             <li class="item"><span class="bullet"></span><div class="text">Organizar los mensajes de WhatsApp para que lleguen a la persona correcta.</div></li>
-            <li class="item"><span class="bullet"></span><div class="text">Crear agente para preguntas frecuentes (precios, horarios, ubicaciones). Con la posibilidad de agendar revisiones</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Crear respuestas automáticas a preguntas frecuentes (precios, horarios, ubicaciones).</div></li>
             <li class="item"><span class="bullet"></span><div class="text">Enviar recordatorios automáticos de citas para reducir ausencias.</div></li>
           </ul>
         </article>
@@ -298,7 +404,7 @@
     // Subtle tilt interaction for cards (disabled on touch)
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if(!isTouch){
-      document.querySelectorAll('.card').forEach(card => {
+      document.querySelectorAll('.card, .xp-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
           const r = card.getBoundingClientRect();
           const x = e.clientX - r.left; const y = e.clientY - r.top;
@@ -314,4 +420,3 @@
   </script>
 </body>
 </html>
-
