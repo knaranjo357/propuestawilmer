@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matriz Impacto – Premium</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Light theme */
+      --bg: #f6f8ff;
+      --card: rgba(255,255,255,.72);
+      --ink: #0f1b3d;
+      --muted: #6b7a99;
+      --border: rgba(15,27,61,.12);
+      --ring: rgba(15,27,61,.08);
+      --shadow: 0 20px 60px rgba(12, 23, 52, 0.12);
+      --glow: 0 0 0 1px rgba(255,255,255,.6) inset, 0 1px 0 rgba(255,255,255,.4) inset, 0 20px 60px rgba(2,6,23,.12);
+
+      --brand: #0b74ff;
+      --brand-2: #5e5bf3;
+      --success: #00c48c;
+      --info: #5c95ff;
+      --warn: #f0b429;
+      --danger: #ef476f;
+    }
+    [data-theme="dark"]{
+      --bg: #0a0f1f;
+      --card: rgba(16,20,36,.58);
+      --ink: #e8eeff;
+      --muted: #aab4d6;
+      --border: rgba(255,255,255,.08);
+      --ring: rgba(88,101,242,.22);
+      --shadow: 0 25px 80px rgba(0,0,0,.35);
+      --glow: 0 0 0 1px rgba(255,255,255,.05) inset, 0 1px 0 rgba(255,255,255,.08) inset, 0 25px 80px rgba(0,0,0,.35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink); background: var(--bg);
+      line-height:1.65;
+      background-image:
+        radial-gradient(1200px 600px at 10% 0%, rgba(91,126,255,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(0,196,140,.22), transparent 60%),
+        radial-gradient(900px 800px at 50% 120%, rgba(239,71,111,.18), transparent 65%);
+    }
+
+    /* Decorative grid backdrop */
+    .backdrop{
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(1200px 700px at 50% -10%, black, transparent 75%);
+      opacity:.45;
+    }
+
+    .container{
+      max-width: 1180px; margin: 48px auto 96px; padding: 0 20px; position: relative; z-index:1;
+    }
+
+    /* Header */
+    .header{
+      position: relative; padding: 24px; border-radius: 20px; overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.55));
+      backdrop-filter: blur(10px); box-shadow: var(--shadow); border:1px solid var(--border);
+    }
+    .header::before{
+      content:""; position:absolute; inset:-1px; border-radius:22px; padding:1px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(11,116,255,.35), rgba(94,91,243,.35), rgba(0,196,140,.35), rgba(11,116,255,.35));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none;
+    }
+    .brand-row{display:flex; align-items:center; gap:14px; flex-wrap: wrap;}
+    .logo{
+      width:40px; height:40px; border-radius:12px;
+      background: radial-gradient(80% 80% at 30% 20%, #fff, #c3d4ff 40%, #88a6ff 70%, #6a8cff 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.5), 0 10px 30px rgba(11,116,255,.25);
+    }
+    h1{font-family: Lexend, Inter, sans-serif; font-weight:800; letter-spacing:-.02em; margin:0; font-size: clamp(28px, 3.2vw, 44px);}
+    .subtitle{color:var(--muted); font-size: clamp(14px, 1.6vw, 16px)}
+
+    /* Top actions */
+    .actions{margin-left:auto; display:flex; align-items:center; gap:10px}
+    .btn{
+      appearance:none; border:1px solid var(--border); background: var(--card); color:var(--ink);
+      padding:10px 14px; border-radius:12px; font-weight:600; letter-spacing:.2px; cursor:pointer;
+      box-shadow: var(--glow); transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 12px 30px rgba(11,116,255,.18); }
+
+    .toggle{ display:flex; align-items:center; gap:10px; padding: 10px 12px; border-radius: 12px; background:var(--card); border:1px solid var(--border); box-shadow: var(--glow); }
+    .switch{ width:48px; height:28px; border-radius:999px; position:relative; background: linear-gradient(180deg, #e7ecff, #d7def8); border:1px solid var(--border); cursor:pointer;}
+    [data-theme="dark"] .switch{ background: linear-gradient(180deg, #1a223f, #11172d);} 
+    .knob{ position:absolute; top:50%; left:4px; width:22px; height:22px; border-radius:50%; transform: translateY(-50%); background:#fff; box-shadow:0 6px 18px rgba(0,0,0,.25); transition:left .25s ease;}
+    [data-theme="dark"] .knob{ left:22px; }
+
+    /* Matrix wrapper */
+    .matrix-wrap{ position: relative; margin-top: 28px; padding: 52px 28px 72px; border-radius: 24px; background: var(--card); border:1px solid var(--border); box-shadow: var(--shadow); overflow: hidden;}
+
+    /* Axis */
+    .axis{
+      position:absolute; inset: 32px; pointer-events:none; opacity:.9;
+      background:
+        linear-gradient(to right, rgba(93,134,255,.6), rgba(0,196,140,.6)) 0 100%/calc(100% - 64px) 2px no-repeat,
+        linear-gradient(to top, rgba(14,118,255,.6), rgba(239,71,111,.6)) 0 100%/2px calc(100% - 64px) no-repeat;
+    }
+    .axis::after, .axis::before{
+      content:""; position:absolute; background: currentColor;}
+    .axis::after{ /* X arrow */ right:32px; bottom: calc(32px - 6px); width: 12px; height:12px; border-right:2px solid rgba(93,134,255,.85); border-top:2px solid rgba(0,196,140,.85); transform: rotate(45deg);}
+    .axis::before{ /* Y arrow */ left: calc(32px - 6px); top:32px; width:12px; height:12px; border-left:2px solid rgba(14,118,255,.85); border-top:2px solid rgba(239,71,111,.85); transform: rotate(-45deg);}    
+
+    .axis-label-y, .axis-label-x{
+      position:absolute; font-weight:700; font-family: Lexend, Inter, sans-serif; letter-spacing:.02em; text-transform: uppercase; color: var(--muted);
+      background: linear-gradient(90deg, #9bb3ff, #5be1bd);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 1px rgba(255,255,255,.3);
+    }
+    .axis-label-y{ left: 4px; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: left top; }
+    .axis-label-x{ left: 50%; bottom: 8px; transform: translateX(-50%); }
+
+    /* Grid */
+    .grid{
+      display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 22px; position:relative; z-index:1;
+    }
+
+    /* Quadrant Cards */
+    .card{
+      position:relative; border-radius: 18px; padding: 22px 20px; overflow:hidden; border: 1px solid var(--border); background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.64)); backdrop-filter: blur(8px); box-shadow: var(--shadow); transform-style: preserve-3d; transition: transform .2s ease, box-shadow .2s ease;
+    }
+    [data-theme="dark"] .card{ background: linear-gradient(180deg, rgba(20,24,41,.82), rgba(16,20,36,.64)); }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 30px 80px rgba(2,6,23,.18); }
+
+    .card::before{
+      content:""; position:absolute; inset:-1px; border-radius:20px; padding:1px; pointer-events:none;
+      background: var(--ring);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+    }
+
+    .kicker{ display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.02em; font-size:.92rem; margin-bottom:8px; text-transform: uppercase;}
+    .kicker .dot{width:10px; height:10px; border-radius:999px;}
+
+    .title{ font-family: Lexend, Inter, sans-serif; font-weight:800; letter-spacing:-.01em; font-size: clamp(18px, 1.6vw, 22px); margin:0 0 8px; display:flex; align-items:center; gap:10px; }
+    .title .emoji{ font-size: 1.4rem; }
+
+    .desc{ color:var(--muted); margin: 0 0 14px; }
+
+    .list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+    .item{ display:flex; align-items:flex-start; gap:10px; padding:12px 12px; border-radius:12px; background: rgba(99, 116, 162, .06); border:1px solid var(--border); }
+    .bullet{ width:8px; height:8px; border-radius:999px; margin-top:6px; flex:0 0 auto; }
+    .text{ flex:1; }
+
+    /* Quadrant accents */
+    .q1 .kicker .dot, .q1 .bullet{ background: var(--success); }
+    .q2 .kicker .dot, .q2 .bullet{ background: var(--info); }
+    .q3 .kicker .dot, .q3 .bullet{ background: var(--warn); }
+    .q4 .kicker .dot, .q4 .bullet{ background: var(--danger); }
+
+    .q1::after, .q2::after, .q3::after, .q4::after{
+      content:""; position:absolute; inset: -1px; border-radius:20px; z-index:0; pointer-events:none; opacity:.8;
+      background: conic-gradient(from 180deg at 50% 50%, transparent, transparent 30%, rgba(255,255,255,.2) 35%, transparent 45%, transparent 100%);
+      filter: blur(12px);
+    }
+
+    /* Emphasize Q1 */
+    .q1{ transform: translateY(-2px); box-shadow: 0 30px 90px rgba(0,196,140,.18); }
+
+    /* Results block */
+    .results{
+      margin-top: 28px; border-radius: 24px; padding: 28px; position:relative; overflow:hidden; border:1px solid var(--border); background: linear-gradient(135deg, rgba(11,116,255,.12), rgba(0,196,140,.12)); box-shadow: var(--shadow);
+    }
+    .results h2{ font-family: Lexend, Inter, sans-serif; font-size: clamp(22px, 2.2vw, 28px); margin:0 0 10px; }
+    .results p{ color: var(--ink); margin:0; }
+    .results .pillset{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+    .pill{ border:1px solid var(--border); background: rgba(255,255,255,.6); padding:10px 12px; border-radius:999px; font-weight:700; letter-spacing:.02em; box-shadow: var(--glow); }
+
+    /* Footer note */
+    .note{ color: var(--muted); font-size:.92rem; margin-top: 14px; }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .axis, .axis-label-x, .axis-label-y{ display:none; }
+      .matrix-wrap{ padding: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <div class="container">
+    <header class="header">
+      <div class="brand-row">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Matriz de Impacto</h1>
+          <div class="subtitle">Prioriza iniciativas por <strong>Beneficio</strong> vs <strong>Esfuerzo</strong> con un diseño ejecutivo</div>
+        </div>
+        <div class="actions">
+          <div class="toggle" role="button" aria-label="Cambiar tema" id="themeToggle">
+            <span>Claro</span>
+            <div class="switch"><div class="knob"></div></div>
+            <span>Oscuro</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="matrix-wrap" aria-label="Matriz Beneficio vs Esfuerzo">
+      <div class="axis" aria-hidden="true"></div>
+      <div class="axis-label-y">Gran Beneficio</div>
+      <div class="axis-label-x">Poco Esfuerzo → Mucho Esfuerzo</div>
+
+      <div class="grid">
+        <!-- Q1 -->
+        <article class="card q1" tabindex="0">
+          <div class="kicker"><span class="dot"></span> Poco Esfuerzo · Gran Beneficio</div>
+          <h3 class="title"><span class="emoji">⭐</span> Ganancias Rápidas</h3>
+          <p class="desc">Acciones inmediatas que generan impacto visible y retorno rápido.</p>
+          <ul class="list">
+            <li class="item"><span class="bullet"></span><div class="text">Organizar los mensajes de WhatsApp para que lleguen a la persona correcta.</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Crear respuestas automáticas a preguntas frecuentes (precios, horarios, ubicaciones).</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Enviar recordatorios automáticos de citas para reducir ausencias.</div></li>
+          </ul>
+        </article>
+
+        <!-- Q2 -->
+        <article class="card q2" tabindex="0">
+          <div class="kicker"><span class="dot"></span> Mucho Esfuerzo · Gran Beneficio</div>
+          <h3 class="title"><span class="emoji">🚀</span> Grandes Proyectos</h3>
+          <p class="desc">Iniciativas estratégicas que transforman el negocio y requieren planificación.</p>
+          <ul class="list">
+            <li class="item"><span class="bullet"></span><div class="text">Integrar inventario para ver repuestos por tienda en tiempo real.</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Seguimiento del estado de reparación visible para el cliente desde el chat.</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Unificar información del cliente en una sola vista 360°.</div></li>
+          </ul>
+        </article>
+
+        <!-- Q3 -->
+        <article class="card q3" tabindex="0">
+          <div class="kicker"><span class="dot"></span> Poco Esfuerzo · Poco Beneficio</div>
+          <h3 class="title"><span class="emoji">👍</span> Ideas para Después</h3>
+          <p class="desc">Tareas sencillas con impacto limitado. Útiles cuando hay capacidad ociosas.</p>
+          <ul class="list">
+            <li class="item"><span class="bullet"></span><div class="text">Ajustes finos de estilo en la web.</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Replicar contenido de forma básica en varias redes.</div></li>
+          </ul>
+        </article>
+
+        <!-- Q4 -->
+        <article class="card q4" tabindex="0">
+          <div class="kicker"><span class="dot"></span> Mucho Esfuerzo · Poco Beneficio</div>
+          <h3 class="title"><span class="emoji">🗑️</span> Mejor Evitar (por ahora)</h3>
+          <p class="desc">Costosas en tiempo/dinero con retorno marginal. No son prioridad.</p>
+          <ul class="list">
+            <li class="item"><span class="bullet"></span><div class="text">Crear una app móvil desde cero sin validar demanda.</div></li>
+            <li class="item"><span class="bullet"></span><div class="text">Construir un sistema administrativo interno demasiado complejo.</div></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="results" aria-label="Resultados esperados">
+      <h2>Resultados que verás primero</h2>
+      <p>Al priorizar <strong>Ganancias Rápidas</strong> obtienes impulso inmediato mientras preparas los proyectos de mayor escala.</p>
+      <div class="pillset">
+        <span class="pill">Ahorro de tiempo</span>
+        <span class="pill">Mejor experiencia de cliente</span>
+        <span class="pill">Operación más ordenada</span>
+        <span class="pill">ROI acelerado</span>
+      </div>
+      <div class="note">Consejo: mantén un backlog vivo y reevalúa cada 4–6 semanas conforme cambian capacidades e impacto.</div>
+    </section>
+  </div>
+
+  <script>
+    // Theme toggle
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    toggle?.addEventListener('click', () => {
+      const isDark = root.getAttribute('data-theme') === 'dark';
+      root.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('matrix-theme', isDark ? 'light' : 'dark');
+    });
+    // Persist theme
+    const saved = localStorage.getItem('matrix-theme');
+    if(saved){ root.setAttribute('data-theme', saved); }
+
+    // Subtle tilt interaction for cards (disabled on touch)
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if(!isTouch){
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const r = card.getBoundingClientRect();
+          const x = e.clientX - r.left; const y = e.clientY - r.top;
+          const rx = (y / r.height - .5) * -6; // tilt X
+          const ry = (x / r.width  - .5) *  6; // tilt Y
+          card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    }
+  </script>
+</body>
+</html>
